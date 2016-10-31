@@ -52,6 +52,7 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
     public int getItemCount() {
         return listDH.size();
     }
+
     public void setOnCardClickListener(OnCardClickListener onCardClickListener) {
         this.onCardClickListener = onCardClickListener;
     }

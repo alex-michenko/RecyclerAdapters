@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 24
@@ -8,7 +9,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
-        versionName "0.1.0"
+        versionName "0.2.0"
     }
 
     buildTypes {
@@ -17,6 +18,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+publish {
+    groupId = 'com.github.alex-michenko'
+    artifactId = 'recycleradapters'
+    publishVersion = '0.2.0'
+    desc = 'Library that simplifies process of creation of adapter for RecyclerView'
+    licences = ['Apache-2.0']
+    uploadName='RecyclerAdapters'
+    website = 'https://github.com/alex-michenko/RecyclerAdapters.git'
 }
 
 dependencies {
