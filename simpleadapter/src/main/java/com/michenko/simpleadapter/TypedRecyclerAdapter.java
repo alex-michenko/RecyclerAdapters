@@ -12,13 +12,11 @@ import java.util.ArrayList;
 
 public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends RecyclerView.Adapter<RecyclerVH> {
 
-    private ArrayList<DH> listDH;
+    private ArrayList<DH> listDH = new ArrayList<>();
     private OnCardClickListener onCardClickListener;
-    private SparseArray<Pair<Integer, Class>> types;
+    private SparseArray<Pair<Integer, Class>> types = new SparseArray<>();
 
-    public TypedRecyclerAdapter() {
-        listDH = new ArrayList<>();
-        types = new SparseArray<>();
+    {
         initTypes();
     }
 

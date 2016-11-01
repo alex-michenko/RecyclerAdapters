@@ -13,16 +13,14 @@ import java.util.ArrayList;
 public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends RecyclerVH> extends RecyclerView.Adapter<VH> {
 
     private Class<VH> typeVH;
-    private ArrayList<DH> listDH;
+    private ArrayList<DH> listDH = new ArrayList<>();
     private OnCardClickListener onCardClickListener;
 
-    @SuppressWarnings("unchecked")
-    public SimpleRecyclerAdapter() {
+    {
         this.typeVH = (Class<VH>)
-                ((ParameterizedType)getClass()
+                ((ParameterizedType) getClass()
                         .getGenericSuperclass())
                         .getActualTypeArguments()[1];
-        this.listDH = new ArrayList<>();
     }
 
     @LayoutRes
