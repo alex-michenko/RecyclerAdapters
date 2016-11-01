@@ -9,7 +9,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
-        versionName "0.2.0"
+        versionName "0.2.1"
     }
 
     buildTypes {
@@ -23,7 +23,7 @@ android {
 publish {
     groupId = 'com.github.alex-michenko'
     artifactId = 'recycleradapters'
-    publishVersion = '0.2.0'
+    publishVersion = '0.2.1'
     desc = 'Library that simplifies process of creation of adapter for RecyclerView'
     licences = ['Apache-2.0']
     uploadName='RecyclerAdapters'
@@ -32,6 +32,11 @@ publish {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile ('com.android.support:recyclerview-v7:24.2.1') {
+        transitive true
+
+        exclude module: 'support-core-ui'
+        exclude module: 'support-compat'
+        exclude module: 'support-annotations'
+    }
 }
