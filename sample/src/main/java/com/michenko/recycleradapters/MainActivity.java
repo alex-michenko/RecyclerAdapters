@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.michenko.recycleradapters.adapters.SamplePagerAdapter;
 import com.michenko.recycleradapters.fragments.SimpleAdapterFragment;
+import com.michenko.recycleradapters.fragments.SimpleAdapterFragment_;
 import com.michenko.recycleradapters.fragments.TypedAdapterFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private void setAdapter() {
         SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(getSupportFragmentManager());
 
-        pagerAdapter.addFragment(new SimpleAdapterFragment());
+        pagerAdapter.addFragment(SimpleAdapterFragment_.builder().build());
         pagerAdapter.addFragment(new TypedAdapterFragment());
 
         vpSamples.setAdapter(pagerAdapter);

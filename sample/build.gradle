@@ -1,4 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        resourcePackageName 'com.michenko.recycleradapters'
+    }
+}
 
 android {
     compileSdkVersion 24
@@ -23,4 +32,8 @@ dependencies {
     compile project(':simpleadapter')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
+
+    //Android Annotations
+    apt 'org.androidannotations:androidannotations:4.0.0'
+    compile 'org.androidannotations:androidannotations-api:4.0.0'
 }

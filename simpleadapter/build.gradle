@@ -9,7 +9,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
-        versionName "0.2.2"
+        versionName "0.2.3"
     }
 
     buildTypes {
@@ -23,7 +23,7 @@ android {
 publish {
     groupId = 'com.github.alex-michenko'
     artifactId = 'recycleradapters'
-    publishVersion = '0.2.2'
+    publishVersion = '0.2.3'
     desc = 'Library that simplifies process of creation of adapter for RecyclerView'
     licences = ['Apache-2.0']
     uploadName='RecyclerAdapters'

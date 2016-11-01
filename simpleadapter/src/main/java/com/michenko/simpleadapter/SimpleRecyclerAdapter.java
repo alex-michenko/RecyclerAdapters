@@ -17,10 +17,18 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
     private OnCardClickListener onCardClickListener;
 
     {
-        this.typeVH = (Class<VH>)
-                ((ParameterizedType) getClass()
-                        .getGenericSuperclass())
-                        .getActualTypeArguments()[1];
+        try {
+            this.typeVH = (Class<VH>)
+                    ((ParameterizedType) this.getClass()
+                            .getGenericSuperclass())
+                            .getActualTypeArguments()[1];
+        } catch (ClassCastException e) {
+            this.typeVH = (Class<VH>)
+                    ((ParameterizedType) this.getClass()
+                            .getSuperclass()
+                            .getGenericSuperclass())
+                            .getActualTypeArguments()[1];
+        }
     }
 
     @LayoutRes
