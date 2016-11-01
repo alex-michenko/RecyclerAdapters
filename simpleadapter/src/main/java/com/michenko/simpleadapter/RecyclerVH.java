@@ -32,8 +32,9 @@ public abstract class RecyclerVH<DH extends RecyclerDH> extends RecyclerView.Vie
      * Simple method of initialization of view. Finds a view that was identified by the id attribute from the XML that
      * was processed in constructor.
      *
-     * @param <T> The type of desired view
-     * @return The typed view if find or null
+     * @param <T> The type of desired view.
+     * @param viewId The id of view.
+     * @return The typed view if find or null.
      */
     @SuppressWarnings("unchecked")
     protected <T extends View> T findView(@IdRes int viewId) {

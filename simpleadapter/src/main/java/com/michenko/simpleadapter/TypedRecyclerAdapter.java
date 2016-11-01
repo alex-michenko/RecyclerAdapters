@@ -1,6 +1,7 @@
 package com.michenko.simpleadapter;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -20,9 +21,20 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
         initTypes();
     }
 
+    /**
+     * The method that initialize all viewTypes
+     */
     protected abstract void initTypes();
 
-    protected <VH extends RecyclerVH<DH>> void addType(int viewType, @LayoutRes int layoutId, Class<VH> clazz) {
+    /**
+     * Puts new viewType in set of viewTypes
+     *
+     * @param viewType The view type
+     * @param layoutId The id of layout XML file
+     * @param clazz The class {@link RecyclerVH} that complies {@param viewType}
+     * @param <VH> The class of ViewHolder
+     */
+    protected <VH extends RecyclerVH<DH>> void addType(int viewType, @LayoutRes int layoutId, @NonNull Class<VH> clazz) {
         types.put(viewType, new Pair<Integer, Class>(layoutId, clazz));
     }
 
@@ -74,6 +86,9 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
         return getViewType(position);
     }
 
+    /**
+     * Similar {@link #getItemViewType(int)}
+     */
     protected abstract int getViewType(int position);
 
     public void setOnCardClickListener(OnCardClickListener onCardClickListener) {

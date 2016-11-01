@@ -15,3 +15,17 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontobfuscate
+-dontwarn org.androidannotations.api.rest.**
+
+-keep class com.michenko.recycleradapters.** {*;}
+
+
+#-keep public class android.support.v7.widget.** { *; }
+#-keep public class android.support.v7.internal.widget.** { *; }
+#-keep public class android.support.v7.internal.view.menu.** { *; }
+#
+#-keep public class * extends android.support.v4.view.ActionProvider {
+#    public <init>(android.content.Context);
+#}

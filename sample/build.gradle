@@ -20,6 +20,9 @@ android {
         versionName "0.1.0"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -31,7 +34,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':simpleadapter')
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
 
     //Android Annotations
     apt 'org.androidannotations:androidannotations:4.0.0'

@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
@@ -18,19 +20,27 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
 
     {
         try {
-            this.typeVH = (Class<VH>)
-                    ((ParameterizedType) this.getClass()
-                            .getGenericSuperclass())
-                            .getActualTypeArguments()[1];
+            this.typeVH = (Class<VH>) findType(getClass());
         } catch (ClassCastException e) {
-            this.typeVH = (Class<VH>)
-                    ((ParameterizedType) this.getClass()
-                            .getSuperclass()
-                            .getGenericSuperclass())
-                            .getActualTypeArguments()[1];
+            throw new IllegalStateException("Type of ViewHolder not found");
         }
     }
 
+    private Type findType(Class c) {
+        if (c.getGenericSuperclass() instanceof ParameterizedType) {
+            return ((ParameterizedType) c
+                    .getGenericSuperclass())
+                    .getActualTypeArguments()[1];
+        } else {
+            return findType(c.getSuperclass());
+        }
+    }
+
+    /**
+     * Called from {@link #onCreateViewHolder} for create ViewHolder
+     *
+     * @return The id of layout XML file
+     */
     @LayoutRes
     protected abstract int getItemLayout();
 
@@ -41,7 +51,8 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
 
     private VH getViewHolder(View view) {
         try {
-            return typeVH.getConstructor(View.class, OnCardClickListener.class, int.class).newInstance(view, onCardClickListener, 0);
+            Constructor<VH> constructor = typeVH.getConstructor(View.class, OnCardClickListener.class, int.class);
+            return constructor.newInstance(view, onCardClickListener, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
