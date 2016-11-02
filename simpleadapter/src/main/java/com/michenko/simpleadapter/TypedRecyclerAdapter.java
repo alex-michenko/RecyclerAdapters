@@ -34,7 +34,7 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
      *
      * @param viewType The view type
      * @param layoutId The id of layout XML file
-     * @param clazz The class {@link RecyclerVH} that complies {@param viewType}
+     * @param clazz The class {@link RecyclerVH} that complies viewType
      * @param <VH> The class of ViewHolder
      */
     protected <VH extends RecyclerVH<DH>> void addType(int viewType, @LayoutRes int layoutId, @NonNull Class<VH> clazz) {
