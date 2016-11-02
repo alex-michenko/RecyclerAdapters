@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -44,7 +45,7 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
     public RecyclerVH onCreateViewHolder(ViewGroup parent, int viewType) {
         Pair<Integer, Class> viewData = types.get(viewType);
         if (viewData != null) {
-            return createVH(viewData.second, View.inflate(parent.getContext(), viewData.first, null), viewType);
+            return createVH(viewData.second, LayoutInflater.from(parent.getContext()).inflate(viewData.first, parent, false), viewType);
         } else {
             throw new IllegalArgumentException("viewType not found");
         }
