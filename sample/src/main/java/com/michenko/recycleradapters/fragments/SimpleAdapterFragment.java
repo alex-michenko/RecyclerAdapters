@@ -15,43 +15,23 @@ import com.michenko.recycleradapters.adapters.ContactAdapter;
 import com.michenko.recycleradapters.holders.ContactDH;
 import com.michenko.simpleadapter.OnCardClickListener;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
 
-@EFragment(R.layout.fragment_simple_adapter)
 public class SimpleAdapterFragment extends Fragment {
 
-    @ViewById
     protected RecyclerView rvSimpleList;
-    @Bean
+
     protected ContactAdapter adapter;
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_simple_adapter, container, false);
-//        findUI(view);
-//        setAdapter();
-//        return view;
-//    }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_simple_adapter, container, false);
 
-    @AfterViews
-    public void viewCreate() {
-        setAdapter();
-        setData();
-    }
+        rvSimpleList = (RecyclerView) view.findViewById(R.id.rvSimpleList);
+        rvSimpleList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-    private void findUI(View v) {
-        rvSimpleList = (RecyclerView) v.findViewById(R.id.rvSimpleList);
-    }
-
-    private void setAdapter() {
+        adapter = new ContactAdapter();
         adapter.setOnCardClickListener(new OnCardClickListener() {
             @Override
             public void onClick(View view, int position, int viewType) {
@@ -72,8 +52,15 @@ public class SimpleAdapterFragment extends Fragment {
             }
         });
 
-        rvSimpleList.setLayoutManager(new LinearLayoutManager(getContext()));
         rvSimpleList.setAdapter(adapter);
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setData();
     }
 
     private void setData() {

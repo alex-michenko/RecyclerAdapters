@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.michenko.recycleradapters.R;
-import com.michenko.recycleradapters.adapters.ContactAdapter;
-import com.michenko.recycleradapters.adapters.TAdapter;
+import com.michenko.recycleradapters.adapters.PersonAdapter;
 import com.michenko.recycleradapters.holders.ContactDH;
+import com.michenko.recycleradapters.holders.PersonDH;
 import com.michenko.simpleadapter.OnCardClickListener;
 
 import java.util.ArrayList;
@@ -22,14 +22,29 @@ import java.util.ArrayList;
 public class TypedAdapterFragment extends Fragment {
 
     private RecyclerView rvSimpleList;
-    private TAdapter adapter;
+    private PersonAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_simple_adapter, container, false);
-        findUI(view);
-        setAdapter();
+        View view = inflater.inflate(R.layout.fragment_typed_adapter, container, false);
+
+        rvSimpleList = (RecyclerView) view.findViewById(R.id.rvTypedList);
+        rvSimpleList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new PersonAdapter();
+        adapter.setOnCardClickListener(new OnCardClickListener() {
+            @Override
+            public void onClick(View view, int position, int viewType) {
+                Toast.makeText(getContext(),
+                        view.getClass().getName() + "\nposition = " + position + "\nviewType = " + viewType,
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        rvSimpleList.setAdapter(adapter);
+
         return view;
     }
 
@@ -38,61 +53,23 @@ public class TypedAdapterFragment extends Fragment {
         setData();
     }
 
-    private void findUI(View v) {
-        rvSimpleList = (RecyclerView) v.findViewById(R.id.rvSimpleList);
-    }
-
-    private void setAdapter() {
-        adapter = new TAdapter();
-        adapter.setOnCardClickListener(new OnCardClickListener() {
-            @Override
-            public void onClick(View view, int position, int viewType) {
-                switch (view.getId()) {
-                    case R.id.ivCopy:
-                        copyItem(position);
-                        break;
-                    case R.id.ivEdit:
-                        editItem(position);
-                        break;
-                    case R.id.ivDelete:
-                        deleteItem(position);
-                        break;
-                    default:
-                        Toast.makeText(getContext(), view.getClass().getName() + " " + position, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-
-        rvSimpleList.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvSimpleList.setAdapter(adapter);
-    }
-
     private void setData() {
-        ArrayList<ContactDH> contacts = new ArrayList<>();
-        contacts.add(new ContactDH("Mom"));
-        contacts.add(new ContactDH("Dad"));
-        contacts.add(new ContactDH("Sister"));
-        contacts.add(new ContactDH("Brother"));
-        contacts.add(new ContactDH("Friend"));
-        contacts.add(new ContactDH("best friend"));
-        contacts.add(new ContactDH("Girlfriend"));
-        contacts.add(new ContactDH("Boss"));
+        ArrayList<PersonDH> contacts = new ArrayList<>();
+        contacts.add(new PersonDH("#"));
+
+        contacts.add(new PersonDH("Favourites"));
+        contacts.add(new PersonDH("Mom", true));
+        contacts.add(new PersonDH("Sister", true));
+        contacts.add(new PersonDH("Brother", true));
+        contacts.add(new PersonDH("best friend", true));
+        contacts.add(new PersonDH("Girlfriend", true));
+
+        contacts.add(new PersonDH("Persons"));
+        contacts.add(new PersonDH("Dad", false));
+        contacts.add(new PersonDH("Sister", false));
+        contacts.add(new PersonDH("Friend", false));
+        contacts.add(new PersonDH("Brother", false));
+        contacts.add(new PersonDH("Boss", false));
         adapter.setListDH(contacts);
-    }
-
-    private void copyItem(int position) {
-        ContactDH item = adapter.getItem(position);
-        adapter.insertItem(item, position + 1);
-    }
-
-    private void editItem(int position) {
-        ContactDH item = adapter.getItem(position);
-        item.setName(item.getName() + ".edited");
-        adapter.changeItem(item, position);
-    }
-
-    private void deleteItem(int position) {
-        adapter.removeItem(position);
     }
 }
