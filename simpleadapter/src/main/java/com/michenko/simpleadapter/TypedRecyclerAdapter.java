@@ -18,13 +18,15 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
     private SparseArray<Pair<Integer, Class>> types = new SparseArray<>();
 
     {
-        initTypes();
+        initViewTypes();
     }
 
     /**
-     * The method that initialize all viewTypes
+     * The method that initialize all viewTypes.
+     *
+     * Use {@link #addType(int, int, Class)} for definition own viewTypes
      */
-    protected abstract void initTypes();
+    protected abstract void initViewTypes();
 
     /**
      * Puts new viewType in set of viewTypes
