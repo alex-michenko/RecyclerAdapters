@@ -104,7 +104,7 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
         notifyDataSetChanged();
     }
 
-    public ArrayList<DH> getListDH(ArrayList<DH> list) {
+    public ArrayList<DH> getListDH() {
         return listDH;
     }
 

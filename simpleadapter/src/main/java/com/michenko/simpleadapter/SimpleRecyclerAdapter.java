@@ -80,7 +80,7 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
         notifyDataSetChanged();
     }
 
-    public ArrayList<DH> getListDH(ArrayList<DH> list) {
+    public ArrayList<DH> getListDH() {
         return listDH;
     }
 
