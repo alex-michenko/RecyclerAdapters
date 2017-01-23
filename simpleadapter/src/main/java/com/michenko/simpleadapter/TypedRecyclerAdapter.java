@@ -104,6 +104,11 @@ public abstract class TypedRecyclerAdapter<DH extends RecyclerDH> extends Recycl
         notifyDataSetChanged();
     }
 
+    public ArrayList<DH> getListDH(ArrayList<DH> list) {
+        return listDH;
+    }
+
+
     public void addListDH(ArrayList<DH> list) {
         int oldSize = listDH.size();
         listDH.addAll(list);

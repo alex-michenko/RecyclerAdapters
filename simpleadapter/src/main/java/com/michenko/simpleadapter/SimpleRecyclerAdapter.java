@@ -46,13 +46,13 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return getViewHolder(LayoutInflater.from(parent.getContext()).inflate(getItemLayout(), parent, false));
+        return getViewHolder(LayoutInflater.from(parent.getContext()).inflate(getItemLayout(), parent, false), viewType);
     }
 
-    private VH getViewHolder(View view) {
+    private VH getViewHolder(View view, int viewType) {
         try {
             Constructor<VH> constructor = typeVH.getConstructor(View.class, OnCardClickListener.class, int.class);
-            return constructor.newInstance(view, onCardClickListener, 0);
+            return constructor.newInstance(view, onCardClickListener, viewType);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,6 +78,10 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
         listDH = new ArrayList<>();
         listDH.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public ArrayList<DH> getListDH(ArrayList<DH> list) {
+        return listDH;
     }
 
     public void addListDH(ArrayList<DH> list) {
