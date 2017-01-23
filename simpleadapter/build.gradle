@@ -27,7 +27,7 @@ android {
 publish {
     groupId = 'com.github.alex-michenko'
     artifactId = 'recycleradapters'
-    publishVersion = '0.2.4'
+    publishVersion = '0.2.5'
     desc = 'Library that simplifies process of creation of adapter for RecyclerView'
     licences = ['Apache-2.0']
     uploadName='RecyclerAdapters'
