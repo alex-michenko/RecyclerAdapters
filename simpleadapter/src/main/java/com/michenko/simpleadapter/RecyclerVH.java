@@ -1,9 +1,9 @@
 package com.michenko.simpleadapter;
 
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Base class-implementation of {@link RecyclerView.ViewHolder}
@@ -12,20 +12,8 @@ import android.view.View;
  */
 public abstract class RecyclerVH<DH extends RecyclerDH> extends RecyclerView.ViewHolder {
 
-    private View parentView;
-
-    public RecyclerVH(View itemView, @Nullable final OnCardClickListener listener, final int viewType) {
+    public RecyclerVH(View itemView) {
         super(itemView);
-        this.parentView = itemView;
-
-        parentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null && getAdapterPosition() != -1) {
-                    listener.onClick(parentView, getAdapterPosition(), viewType);
-                }
-            }
-        });
     }
 
     /**
@@ -38,8 +26,15 @@ public abstract class RecyclerVH<DH extends RecyclerDH> extends RecyclerView.Vie
      */
     @SuppressWarnings("unchecked")
     protected <T extends View> T findView(@IdRes int viewId) {
-        return (T) parentView.findViewById(viewId);
+        return (T) itemView.findViewById(viewId);
     }
+
+    /**
+     * Called from {@link RecyclerView.Adapter#onCreateViewHolder(ViewGroup parent, int viewType)}
+     *
+     * @param listener The callback for receiving of notification about click on views of item
+     */
+    public abstract void setListeners(final OnCardClickListener listener);
 
     /**
      * Called from {@link RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)}

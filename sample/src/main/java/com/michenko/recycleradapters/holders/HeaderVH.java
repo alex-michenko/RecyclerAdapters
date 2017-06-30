@@ -1,6 +1,5 @@
 package com.michenko.recycleradapters.holders;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,19 +12,21 @@ public class HeaderVH extends RecyclerVH<PersonDH> {
 
     private TextView tvHeader;
 
-    public HeaderVH(View itemView, @Nullable final OnCardClickListener listener, final int viewType) {
-        super(itemView, listener, viewType);
+    public HeaderVH(View itemView) {
+        super(itemView);
 
         tvHeader = findView(R.id.tvHeader);
 
-        if (listener != null) {
-            tvHeader.setOnClickListener(new View.OnClickListener() {
+    }
+
+    @Override
+    public void setListeners(final OnCardClickListener listener) {
+        tvHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onClick(tvHeader, getAdapterPosition(), viewType);
+                    listener.onClick(tvHeader, getAdapterPosition(), getItemViewType());
                 }
-            });
-        }
+        });
     }
 
     @Override

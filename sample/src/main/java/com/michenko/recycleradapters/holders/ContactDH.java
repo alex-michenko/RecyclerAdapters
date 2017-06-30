@@ -3,7 +3,7 @@ package com.michenko.recycleradapters.holders;
 import com.michenko.simpleadapter.RecyclerDH;
 
 
-public class ContactDH extends RecyclerDH {
+public class ContactDH implements RecyclerDH {
 
     private String name;
 

@@ -4,7 +4,7 @@ import com.michenko.simpleadapter.RecyclerDH;
 
 import java.util.Random;
 
-public class PersonDH extends RecyclerDH {
+public class PersonDH implements RecyclerDH {
 
     public boolean isFavourite;
     public int countStars;

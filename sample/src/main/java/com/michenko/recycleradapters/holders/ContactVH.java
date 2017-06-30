@@ -1,6 +1,5 @@
 package com.michenko.recycleradapters.holders;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,26 +17,35 @@ public class ContactVH extends RecyclerVH<ContactDH> {
     private ImageView ivDelete;
 
 
-    public ContactVH(View itemView, @Nullable final OnCardClickListener listener, final int viewType) {
-        super(itemView, listener, viewType);
+    public ContactVH(View itemView) {
+        super(itemView);
 
         tvNameContact = findView(R.id.tvNameContact);
         ivCopy = findView(R.id.ivCopy);
         ivEdit = findView(R.id.ivEdit);
         ivDelete = findView(R.id.ivDelete);
+    }
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
+    @Override
+    public void setListeners( final OnCardClickListener listener) {
+        ivCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClick(view, getAdapterPosition(), viewType);
-                }
+                listener.onClick(view, getAdapterPosition(), getItemViewType());
             }
-        };
-
-        ivCopy.setOnClickListener(clickListener);
-        ivEdit.setOnClickListener(clickListener);
-        ivDelete.setOnClickListener(clickListener);
+        });
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(view, getAdapterPosition(), getItemViewType());
+            }
+        });
+        ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(view, getAdapterPosition(), getItemViewType());
+            }
+        });
     }
 
     @Override

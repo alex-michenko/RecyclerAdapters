@@ -1,67 +1,36 @@
 package com.michenko.simpleadapter;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
+public abstract class RecyclerAdapter<DH extends RecyclerDH> extends RecyclerView.Adapter<RecyclerVH<DH>> {
 
-public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends RecyclerVH> extends RecyclerView.Adapter<VH> {
-
-    private Class<VH> typeVH;
-    private ArrayList<DH> listDH = new ArrayList<>();
+    private List<DH> listDH = new ArrayList<>();
     private OnCardClickListener onCardClickListener;
 
-    {
-        try {
-            this.typeVH = (Class<VH>) findType(getClass());
-        } catch (ClassCastException e) {
-            throw new IllegalStateException("Type of ViewHolder not found");
+    @Override
+    public RecyclerVH<DH> onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerVH<DH> holder = createVH(LayoutInflater.from(parent.getContext()).inflate(getLayoutRes(viewType), parent, false), viewType);
+        if (onCardClickListener != null) {
+            holder.setListeners(onCardClickListener);
         }
+        return holder;
     }
 
-    private Type findType(Class c) {
-        if (c.getGenericSuperclass() instanceof ParameterizedType) {
-            return ((ParameterizedType) c
-                    .getGenericSuperclass())
-                    .getActualTypeArguments()[1];
-        } else {
-            return findType(c.getSuperclass());
-        }
-    }
-
-    /**
-     * Called from {@link #onCreateViewHolder} for create ViewHolder
-     *
-     * @return The id of layout XML file
-     */
+    @NonNull
+    protected abstract RecyclerVH<DH> createVH(View view, int viewType);
     @LayoutRes
-    protected abstract int getItemLayout();
+    protected abstract int getLayoutRes(int viewType);
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return getViewHolder(LayoutInflater.from(parent.getContext()).inflate(getItemLayout(), parent, false), viewType);
-    }
-
-    private VH getViewHolder(View view, int viewType) {
-        try {
-            Constructor<VH> constructor = typeVH.getConstructor(View.class, OnCardClickListener.class, int.class);
-            return constructor.newInstance(view, onCardClickListener, viewType);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(RecyclerVH<DH> holder, int position) {
         holder.bindData(listDH.get(position));
     }
 
@@ -70,21 +39,23 @@ public abstract class SimpleRecyclerAdapter<DH extends RecyclerDH, VH extends Re
         return listDH.size();
     }
 
+
     public void setOnCardClickListener(OnCardClickListener onCardClickListener) {
         this.onCardClickListener = onCardClickListener;
     }
 
-    public void setListDH(ArrayList<DH> list) {
-        listDH = new ArrayList<>();
+    public void setListDH(@NonNull List<DH> list) {
+        listDH.clear();
         listDH.addAll(list);
         notifyDataSetChanged();
     }
 
-    public ArrayList<DH> getListDH() {
+    public List<DH> getListDH() {
         return listDH;
     }
 
-    public void addListDH(ArrayList<DH> list) {
+
+    public void addListDH(List<DH> list) {
         int oldSize = listDH.size();
         listDH.addAll(list);
         notifyItemRangeInserted(oldSize, listDH.size());
