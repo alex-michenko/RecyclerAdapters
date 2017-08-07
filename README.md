@@ -8,7 +8,7 @@
 
 ```java
 dependencies {
-    compile 'com.github.alex-michenko:recycleradapters:0.2.4'
+    compile 'com.github.alex-michenko:recycleradapters:0.3.0'
 }
 ```
 
@@ -17,7 +17,7 @@ dependencies {
 ### 1.Create DataHolder
   Create class-wrapper that will hold data for adapter:
   ```java
-  public class PersonDH extends RecyclerDH {
+  public class PersonDH implements RecyclerDH {
 
     public boolean isFavourite;
     public int countStars;
@@ -36,7 +36,7 @@ dependencies {
     public PersonDH(String headerName) {
         this.headerName = headerName;
     }
-  }
+}
   ```
 ### 2. Create ViewHolder
   Create ViewHolder class and set generic parameter as created DataHolder:
@@ -45,17 +45,18 @@ dependencies {
 
     private TextView tvNamePerson;
 
-    public PersonVH(View itemView, @Nullable final OnCardClickListener listener, final int viewType) {
-        super(itemView, listener, viewType);
+    public PersonVH(View itemView) {
+        super(itemView);
 
         tvNamePerson = findView(R.id.tvNamePerson);
+    }
 
+    @Override
+    public void setListeners(final OnCardClickListener listener) {
         tvNamePerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClick(view, getAdapterPosition(), viewType);
-                }
+                    listener.onClick(view, getAdapterPosition(), getItemViewType());
             }
         });
     }
@@ -64,8 +65,10 @@ dependencies {
     public void bindData(PersonDH data) {
         tvNamePerson.setText(data.name);
     }
-  }
+
+}
   ```
+  Method *setListeners()* is called if **OnCardClickListener** was setted for your adapter
   
   If you adapter has several viewTypes then create suitable ViewHolders:
   
@@ -82,35 +85,42 @@ dependencies {
   ```
   
 ### 3. Create adapter
-  If all items have same viewType then you need to extend **_SimpleRecyclerAdapter_** :
-  ```java
-  public class ContactAdapter extends SimpleRecyclerAdapter<PersonDH, PersonVH> {
 
-    @Override
-    protected int getItemLayout() {
-        return R.layout.item_person;
-    }
-  }
-  ```
-  You need to override method getItemLayout() and define layout resourse for item.
-  
-  For several viewTypes you need to extend **_TypedRecyclerAdapter_** :
+  Create an adapter and implement methods for cteating ViewHolders
   ```java
-  public class PersonAdapter extends TypedRecyclerAdapter<PersonDH> {
+  public class PersonAdapter extends RecyclerAdapter<PersonDH> {
 
     private static final int HEADER = 1;
     private static final int PERSON = 11;
     private static final int FAVOURITE = 0;
 
+    @NonNull
     @Override
-    protected void initViewTypes() {
-        addType(PERSON, R.layout.item_person, PersonVH.class);
-        addType(HEADER, R.layout.item_header, HeaderVH.class);
-        addType(FAVOURITE, R.layout.item_favourite, FavouriteVH.class);
+    protected RecyclerVH<PersonDH> createVH(View view, int viewType) {
+        switch (viewType) {
+            case PERSON:
+                return new PersonVH(view);
+            case HEADER:
+                return new HeaderVH(view);
+            default:
+                return new FavouriteVH(view);
+        }
     }
 
     @Override
-    protected int getViewType(int position) {
+    protected int getLayoutRes(int viewType) {
+        switch (viewType) {
+            case PERSON:
+                return R.layout.item_person;
+            case HEADER:
+                return R.layout.item_header;
+            default:
+                return R.layout.item_favourite;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
         PersonDH dh = getItem(position);
         if (dh.headerName != null) {
             return HEADER;
@@ -118,11 +128,8 @@ dependencies {
             return dh.isFavourite ? FAVOURITE : PERSON;
         }
     }
-  }
+}
   ```
-  In `initViewTypes()` you need to define all viewTypes of adapter using method addType().
-  
-  `getViewType()` is similar `RecyclerView.Adapter#getItemViewType()`
   
 ### 4. Use adapter
   Init your adapter and set in _RecyclerView_ :
@@ -140,8 +147,6 @@ dependencies {
 
         rvSimpleList.setAdapter(adapter);
   ```
-  
-  The default `OnCardClickListener#onClick()` is called when clicked on item. You may define in ViewHolder other calls of method.
   
   *For more information see sample.*
   
